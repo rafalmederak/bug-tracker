@@ -1,0 +1,32 @@
+@use "../abstracts/variables" as *;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $gray-400;
+  border-radius: 20px;
+}
+::-webkit-scrollbar-track {
+  background: $gray-200;
+  border-radius: 20px;
+}

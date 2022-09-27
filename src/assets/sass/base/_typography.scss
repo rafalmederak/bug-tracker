@@ -1,0 +1,17 @@
+@use "../abstracts/variables" as *;
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: $font-family-poppins, $font-family-sans-serif;
+}
+
+input,
+button,
+textarea,
+select {
+  font-family: $font-family-poppins, $font-family-sans-serif;
+}
