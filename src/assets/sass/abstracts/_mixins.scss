@@ -1,0 +1,8 @@
+//Button
+@mixin btn--background($value) {
+  background-color: $value;
+}
+
+@mixin btn--color($value) {
+  color: $value;
+}

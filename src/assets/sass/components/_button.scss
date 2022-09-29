@@ -1,0 +1,28 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.button__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1rem;
+  width: 18rem;
+  border: none;
+  border-radius: $border-radius-medium;
+  font-weight: $font-weight-medium;
+  font-size: 1.6rem;
+  svg {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-right: 0.6rem;
+  }
+}
+
+@each $color, $value in $colors {
+  .btn--background-#{$color} {
+    @include btn--background($value);
+  }
+  .btn--color-#{$color} {
+    @include btn--color($value);
+  }
+}

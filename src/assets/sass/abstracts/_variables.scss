@@ -21,6 +21,25 @@ $green: #6ec660;
 $red: #ff5c5c;
 $yellow: #fddb62;
 
+//Colors map
+$colors: (
+  "white": $white,
+  "gray-100": $gray-100,
+  "gray-200": $gray-200,
+  "gray-300": $gray-300,
+  "gray-400": $gray-400,
+  "gray-500": $gray-500,
+  "gray-800": $gray-800,
+  "black": $black,
+  "blue-100": $blue-100,
+  "blue-300": $blue-300,
+  "blue-500": $blue-500,
+  "blue-700": $blue-700,
+  "green": $green,
+  "red": $red,
+  "yellow": $yellow,
+);
+
 /* ------ Fonts ------ */
 
 //Font Family
