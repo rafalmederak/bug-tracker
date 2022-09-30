@@ -6,3 +6,10 @@
 @mixin btn--color($value) {
   color: $value;
 }
+
+//Media query
+@mixin media($value) {
+  @media screen and (min-width: $value) {
+    @content;
+  }
+}

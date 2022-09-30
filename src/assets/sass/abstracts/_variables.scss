@@ -78,3 +78,11 @@ $transition-base: all 0.3s ease-in-out;
 $box-shadow-small: 0 0.125rem 0.25rem rgba($black, 0.075);
 $box-shadow-medium: 0 0.5rem 1rem rgba($black, 0.15);
 $box-shadow-large: 0 1rem 3rem rgba($black, 0.175);
+
+/* ------ Breakpoints ------ */
+
+$breakpoint-sm: 540px;
+$breakpoint-md: 720px;
+$breakpoint-lg: 960px;
+$breakpoint-xl: 1140px;
+$breakpoint-xxl: 1320px;
