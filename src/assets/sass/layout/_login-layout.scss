@@ -99,6 +99,12 @@
   p {
     font-weight: 500;
   }
+  b {
+    cursor: pointer;
+    &:hover {
+      color: $blue-700;
+    }
+  }
 }
 
 .login-layout__image-container {

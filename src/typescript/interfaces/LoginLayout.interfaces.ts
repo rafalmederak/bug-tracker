@@ -1,7 +1,6 @@
 export interface ILoginLayoutProps {
   title: string;
-  username: boolean;
-  buttonText: string;
+  form: JSX.Element;
   helpers: JSX.Element;
   image: string;
 }
