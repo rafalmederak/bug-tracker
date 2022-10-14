@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { login, logout, selectUser } from "store/userSlice";
+import NotFound from "pages/NotFound";
 
 function App() {
   const user = useSelector(selectUser);
@@ -38,9 +39,36 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace={true} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path={"/feed/*"}
+            element={
+              <NotFound
+                text="You have to log in to access this page."
+                link="/"
+              />
+            }
+          />
+          <Route
+            path="*"
+            element={<NotFound text="Page not found." link="/" />}
+          />
         </>
       ) : (
-        <Route path="/feed/home" element={<></>} />
+        <>
+          <Route
+            path={"/login"}
+            element={
+              <NotFound
+                text="You have to log out to log in to another account."
+                link="/feed/home"
+              />
+            }
+          />
+          <Route
+            path="*"
+            element={<NotFound text="Page not found." link="/feed/home" />}
+          />
+        </>
       )}
     </Routes>
   );

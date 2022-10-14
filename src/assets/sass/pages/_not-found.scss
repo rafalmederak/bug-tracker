@@ -1,0 +1,44 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.not-found__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 5rem 3rem;
+  svg {
+    width: 100%;
+  }
+  h2 {
+    font-size: $font-size-h2;
+    font-weight: $font-weight-medium;
+    text-align: center;
+    margin: 6rem 0 4rem 0;
+  }
+
+  @include media($breakpoint-md) {
+    svg {
+      width: 40rem;
+    }
+  }
+
+  @include media($breakpoint-lg) {
+    svg {
+      width: 50rem;
+    }
+  }
+}
+
+.not-found__link {
+  button {
+    width: 22rem;
+    cursor: pointer;
+  }
+  svg {
+    width: initial;
+    order: 1;
+    margin: 0 0 0 0.6rem;
+  }
+}
