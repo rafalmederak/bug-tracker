@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { login, logout, selectUser } from "store/userSlice";
 import NotFound from "pages/NotFound";
+import FeedLayout from "layouts/FeedLayout";
 
 function App() {
   const user = useSelector(selectUser);
@@ -55,6 +56,16 @@ function App() {
         </>
       ) : (
         <>
+          <Route
+            path="/feed/home"
+            element={
+              <FeedLayout>
+                <div>
+                  <h1>Home</h1>
+                </div>
+              </FeedLayout>
+            }
+          />
           <Route
             path={"/login"}
             element={
