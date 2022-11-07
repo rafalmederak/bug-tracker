@@ -10,8 +10,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const demoUserEmail = process.env.REACT_APP_DEMOUSEREMAIL!;
-  const demoUserPassword = process.env.REACT_APP_DEMOUSERPASSWORD!;
+  const demoAdminEmail = process.env.REACT_APP_DEMOADMINEMAIL!;
+  const demoAdminPassword = process.env.REACT_APP_DEMOADMINPASSWORD!;
 
   const login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,8 +24,8 @@ const Login = () => {
       });
   };
 
-  const demoUserLogin = () => {
-    signInWithEmailAndPassword(auth, demoUserEmail, demoUserPassword)
+  const demoAdminLogin = () => {
+    signInWithEmailAndPassword(auth, demoAdminEmail, demoAdminPassword)
       .then(() => {
         navigate("/feed/home");
       })
@@ -61,7 +61,7 @@ const Login = () => {
             </Link>
           </p>
           <p>
-            Sign in as a <b onClick={demoUserLogin}>Demo User</b>
+            Sign in as a <b onClick={demoAdminLogin}>Demo Admin</b>
           </p>
         </>
       }

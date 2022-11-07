@@ -8,23 +8,30 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { login, logout, selectUser } from "store/userSlice";
 import NotFound from "pages/NotFound";
 import FeedLayout from "layouts/FeedLayout";
+import { IUserAuth } from "typescript/interfaces/Firebase.interfaces";
 
 function App() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth: IUserAuth | null) => {
       if (userAuth) {
+        userAuth.getIdTokenResult().then(idTokenResult => {
+        userAuth.admin = idTokenResult.claims.admin        
         dispatch(
           login({
             user: {
               uid: userAuth.uid,
               email: userAuth.email,
               name: userAuth.displayName,
+              admin: userAuth.admin,
+              phone: userAuth.phoneNumber,
+              photo: userAuth.photoURL
             },
           })
         );
+      })
       } else {
         dispatch(logout());
       }

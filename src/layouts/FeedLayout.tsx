@@ -31,8 +31,6 @@ const FeedLayout = ({ children }: IFeedLayoutProps) => {
     navigate("/");
   };
 
-  const examplerole: string = "Admin";
-
   return (
     <div className="feed-layout__container">
       <header className="feed-layout__header">
@@ -44,17 +42,22 @@ const FeedLayout = ({ children }: IFeedLayoutProps) => {
           <div className="feed-layout__header__user">
             <div
               className={`feed-layout__header__role ${
-                examplerole === "Admin"
-                  ? "header__role--blue"
-                  : examplerole === "User" && "header__role--green"
+                user?.admin ? "header__role--blue" : "header__role--green"
               }`}
             >
-              <p>{examplerole}</p>
+              <p>{user?.admin ? "Admin" : "User"}</p>
             </div>
             <h2>{user?.name}</h2>
           </div>
           <div className="feed-layout__header__icons">
             <LogoutIcon onClick={logout} />
+            <div className="feed-layout__header__icons__photo-container">
+              {user?.photo ? (
+                <img src={user.photo} alt="user" />
+              ) : (
+                <p>{user?.name?.charAt(0)}</p>
+              )}
+            </div>
             <CloseIcon
               onClick={() => setIsMenuOpen(false)}
               className="feed-layout__header__close-icon"

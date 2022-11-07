@@ -76,6 +76,26 @@
   }
 }
 
+.feed-layout__header__icons__photo-container {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 3.8rem;
+  width: 3.8rem;
+  border-radius: 50%;
+  border: 1px solid $gray-300;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @include media($breakpoint-md) {
+    display: flex;
+  }
+}
+
 .feed-layout__header__user {
   display: flex;
   align-items: center;
