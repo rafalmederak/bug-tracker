@@ -1,6 +1,6 @@
 //react
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 //firebase
 import { auth } from "../firebase/firebase";
@@ -21,7 +21,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 //interfaces
 import { IFeedLayoutProps } from "typescript/interfaces/FeedLayout.interfaces";
 
-const FeedLayout = ({ children }: IFeedLayoutProps) => {
+const FeedLayout = () => {
   const user = useSelector(selectUser);
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -101,7 +101,9 @@ const FeedLayout = ({ children }: IFeedLayoutProps) => {
         </div>
       </div>
 
-      <div className="feed-layout__section">{children}</div>
+      <div className="feed-layout__section">
+        <Outlet />
+      </div>
     </div>
   );
 };
