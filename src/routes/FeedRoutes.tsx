@@ -1,8 +1,12 @@
 import FeedLayout from "layouts/FeedLayout";
+import Users from "pages/feed/Users";
 import NotFound from "pages/NotFound";
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
+import { selectUser } from "store/userSlice";
 
 const FeedRoutes = () => {
+  const user = useSelector(selectUser);
   return (
     <Routes>
       <Route element={<FeedLayout />}>
@@ -14,6 +18,7 @@ const FeedRoutes = () => {
             </div>
           }
         />
+        {user?.admin && <Route path="/feed/users" element={<Users />} />}
       </Route>
       <Route
         path={"/login"}

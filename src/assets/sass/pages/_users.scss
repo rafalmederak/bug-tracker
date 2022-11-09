@@ -1,0 +1,137 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+.users__container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  h1 {
+    font-size: 3.2rem;
+    font-weight: $font-weight-semibold;
+  }
+  button {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+
+    @include media($breakpoint-md) {
+      position: initial;
+      bottom: initial;
+      left: initial;
+      transform: initial;
+      width: 13rem;
+      margin-left: 3rem;
+    }
+
+    @include media($breakpoint-lg) {
+      width: 16rem;
+    }
+  }
+}
+
+.users__filter {
+  margin-top: 4rem;
+  display: flex;
+  input {
+    flex: 4;
+    width: 100%;
+    font-size: 1.6rem;
+    border: none;
+    border-bottom: 1px solid $gray-300;
+    max-width: 30rem;
+
+    @include media($breakpoint-lg) {
+      flex: 1;
+    }
+  }
+}
+
+.users__filter__role-container {
+  display: flex;
+  margin-left: 3rem;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  svg {
+    width: 2.2rem;
+    height: 2.2rem;
+    margin-right: 0.6rem;
+  }
+
+  @include media($breakpoint-md) {
+    justify-content: flex-start;
+  }
+}
+
+.users__table {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid $gray-300;
+  border-radius: $border-radius-medium;
+  margin-bottom: 5.6rem;
+}
+
+.users__user {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid $gray-300;
+
+  &:last-child {
+    border: none;
+  }
+  svg {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+}
+
+.users__user__main {
+  display: flex;
+  align-items: center;
+}
+
+.users__user__name-container {
+  display: flex;
+  align-items: center;
+  img {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 4.2rem;
+    height: 4.2rem;
+  }
+  p {
+    margin-left: 1.4rem;
+  }
+}
+
+.users__user__role {
+  margin-left: 4rem;
+  margin-right: 2rem;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  width: 8rem;
+  border-radius: $border-radius-medium;
+  font-size: $font-size-h4;
+  color: $white;
+
+  @include media($breakpoint-md) {
+    display: flex;
+  }
+}
+
+.users__user__role--blue {
+  background: $blue-300;
+}
+
+.users__user__role--green {
+  background: $green;
+}
