@@ -1,18 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { InitialState } from "typescript/interfaces/UserSlice.interfaces";
 import { RootState } from "./store";
-
-interface IUser {
-  uid: string | null;
-  email: string | null;
-  name: string | null;
-  admin?: boolean;
-  phone?: string | null;
-  photo?: string | null;
-}
-
-interface InitialState {
-  user: IUser | null;
-}
 
 const initialState: InitialState = { user: null };
 
