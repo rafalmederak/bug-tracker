@@ -54,6 +54,13 @@
   }
 }
 
+.users__filter__select {
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  font-size: 1.6rem;
+}
+
 .users__count {
   display: none;
   font-weight: $font-weight-regular;
@@ -71,7 +78,7 @@
   align-items: center;
   justify-content: flex-end;
   background: $gray-100;
-  padding: 0.4rem 2rem 0.4rem 1rem;
+  padding: 0.4rem 1rem 0.4rem 1rem;
   border-radius: $border-radius-medium;
   cursor: pointer;
   svg {
@@ -119,6 +126,17 @@
 
   @include media($breakpoint-md) {
     grid-template-columns: 30rem 1fr 1fr;
+  }
+}
+
+.users__user__not-found-message {
+  display: flex;
+  align-items: center;
+  svg {
+    color: $red;
+  }
+  p {
+    margin-left: 0.6rem;
   }
 }
 
