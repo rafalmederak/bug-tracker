@@ -2,7 +2,7 @@ import Button from "components/Button";
 import SortIcon from "@mui/icons-material/Sort";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
-import { getDocs } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { IUser } from "typescript/interfaces/UserSlice.interfaces";
 import { createCollection } from "../../firebase/firebase";
@@ -30,7 +30,7 @@ const Users = () => {
   };
 
   useEffect(() => {
-    getDocs(usersCollection).then((res) => {
+    onSnapshot(usersCollection, (res) => {
       setUsers(
         res.docs.map((item) => {
           return { ...item.data(), uid: item.id };
