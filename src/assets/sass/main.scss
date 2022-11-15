@@ -8,6 +8,7 @@
 /* ------ layout imports ------ */
 @use "./layout/login-layout";
 @use "./layout/feed-layout";
+@use "./layout/user-detail";
 
 /* ------ pages imports ------ */
 @use "./pages/not-found";

@@ -7,12 +7,15 @@ import { useEffect, useState } from "react";
 import { IUser } from "typescript/interfaces/UserSlice.interfaces";
 import { createCollection } from "../../firebase/firebase";
 import ErrorIcon from "@mui/icons-material/Error";
+import AddUser from "components/AddUser";
+import EditUser from "components/EditUser";
 
 const Users = () => {
   const usersCollection = createCollection<IUser>("users");
   const [users, setUsers] = useState<IUser[]>([]);
   const [searchUserInput, setSearchUserInput] = useState("");
   const [sortThis, setSortThis] = useState("");
+  const [userDetail, setUserDetail] = useState<string>("");
 
   const sortUsers = (a: IUser, b: IUser) => {
     switch (sortThis) {
@@ -77,46 +80,58 @@ const Users = () => {
         <h4 className="users__count">
           All users: <b>{users.length}</b>
         </h4>
-        <Button text="Add user" icon={<AddCircleOutlineIcon />} />
+        <Button
+          className="add-user__button"
+          text="Add user"
+          icon={<AddCircleOutlineIcon />}
+          onClick={() => setUserDetail("addUser")}
+        />
       </div>
 
-      <div className="users__table">
-        {filteredUsersData.length > 0 ? (
-          filteredUsersData
-            .sort((a: IUser, b: IUser) => sortUsers(a, b))
-            .map((user: IUser) => (
-              <div className="users__user" key={user.uid}>
-                <div className="users__user__main">
-                  <div className="users__user__name-container">
-                    <div className="users__user__photo-container">
-                      {user?.photo ? (
-                        <img src={user.photo} alt="user" />
-                      ) : (
-                        <h3>{user?.name?.charAt(0)}</h3>
-                      )}
+      <div className="users__users-information">
+        <div className="users__table">
+          {filteredUsersData.length > 0 ? (
+            filteredUsersData
+              .sort((a: IUser, b: IUser) => sortUsers(a, b))
+              .map((user: IUser) => (
+                <div className="users__user" key={user.uid}>
+                  <div className="users__user__main">
+                    <div className="users__user__name-container">
+                      <div className="users__user__photo-container">
+                        {user?.photo ? (
+                          <img src={user.photo} alt="user" />
+                        ) : (
+                          <h3>{user?.name?.charAt(0)}</h3>
+                        )}
+                      </div>
+                      <p>{user.name}</p>
                     </div>
-                    <p>{user.name}</p>
                   </div>
+                  <div
+                    className={`users__user__role ${
+                      user?.admin
+                        ? "users__user__role--blue"
+                        : "users__user__role--green"
+                    }`}
+                  >
+                    <p>{user?.admin ? "Admin" : "User"}</p>
+                  </div>
+                  <EditIcon onClick={() => setUserDetail("editUser")} />
                 </div>
-                <div
-                  className={`users__user__role ${
-                    user?.admin
-                      ? "users__user__role--blue"
-                      : "users__user__role--green"
-                  }`}
-                >
-                  <p>{user?.admin ? "Admin" : "User"}</p>
-                </div>
-                <EditIcon />
+              ))
+          ) : (
+            <div className="users__user">
+              <div className="users__user__not-found-message">
+                <ErrorIcon />
+                <p>User not found</p>
               </div>
-            ))
-        ) : (
-          <div className="users__user">
-            <div className="users__user__not-found-message">
-              <ErrorIcon />
-              <p>User not found</p>
             </div>
-          </div>
+          )}
+        </div>
+
+        {userDetail === "addUser" && <AddUser setUserDetail={setUserDetail} />}
+        {userDetail === "editUser" && (
+          <EditUser setUserDetail={setUserDetail} />
         )}
       </div>
     </section>

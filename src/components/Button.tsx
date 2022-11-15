@@ -5,10 +5,13 @@ const Button = ({
   text,
   background = "blue-700",
   color = "white",
+  className,
+  ...props
 }: IButton) => {
   return (
     <button
-      className={`button__container btn--background-${background} btn--color-${color}`}
+      className={`button__container btn--background-${background} btn--color-${color} ${className}`}
+      {...props}
     >
       {icon}
       {text}

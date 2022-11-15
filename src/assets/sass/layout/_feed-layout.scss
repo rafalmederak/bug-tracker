@@ -38,6 +38,7 @@
 
   @include media($breakpoint-md) {
     padding: 1rem 4.2rem;
+    z-index: 100;
   }
 }
 
