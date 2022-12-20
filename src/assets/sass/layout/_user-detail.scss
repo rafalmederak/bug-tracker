@@ -22,7 +22,7 @@
     left: initial;
     right: initial;
     top: initial;
-    overflow: initial;
+    overflow: auto;
   }
 
   @include media($breakpoint-lg) {
@@ -44,6 +44,20 @@
   height: 12.8rem !important;
   color: $gray-400;
   justify-self: center;
+
+  @include media($breakpoint-lg) {
+    width: 16rem !important;
+    height: 16rem !important;
+  }
+}
+
+.user-detail__user-image {
+  width: 12.8rem !important;
+  height: 12.8rem !important;
+  justify-self: center;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid $gray-300;
 
   @include media($breakpoint-lg) {
     width: 16rem !important;
@@ -96,6 +110,17 @@
   }
 }
 
+.user-detail__form__item__password-check {
+  display: flex;
+  align-items: center;
+  input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: 0;
+    margin-left: 1rem;
+  }
+}
+
 .user-detail__form__select {
   display: flex;
   flex-direction: column;
@@ -110,4 +135,8 @@
     justify-self: center;
     margin-top: 4rem;
   }
+}
+
+.user-detail__error-message {
+  color: $red;
 }

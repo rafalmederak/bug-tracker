@@ -1,35 +1,55 @@
-import { usersInputs } from "data/UserInputs";
-import Button from "./Button";
 import UserDetailLayout from "../layouts/UserDetailLayout";
-import { IUserDetail } from "typescript/interfaces/UserDetail.interfaces";
+import { IUserDetailProps } from "typescript/interfaces/UserDetail.interfaces";
+import { FormData } from "typescript/types/UsersForm.types";
+import { functions } from "../firebase/firebase";
+import { httpsCallable } from "firebase/functions";
 
-const AddUser = ({ setUserDetail }: IUserDetail) => {
+const AddUser = ({ setUserDetail }: IUserDetailProps) => {
+  const formValues = {
+    name: "",
+    email: "",
+    photo: "",
+    phone: "",
+    role: "user",
+  };
+
+  const onSubmit = async (data: FormData) => {
+    const createUser = httpsCallable(functions, "createUser");
+    const addAdminRole = httpsCallable(functions, "addAdminRole");
+
+    try {
+      console.log(data);
+      createUser({
+        email: data.email,
+        phone: data.phone || null,
+        photo: data.photo || null,
+        name: data.name,
+        password: data.password,
+      })
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      if (data?.role === "admin") {
+        addAdminRole({ email: data.email }).then((result) => {
+          console.log(result);
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    console.log("test add user");
+  };
+
   return (
     <UserDetailLayout
-      form={
-        <form className="user-detail__form">
-          {usersInputs.map((user) => (
-            <div className="user-detail__form__item">
-              <label htmlFor={user.id}>{user.label}</label>
-              {user.element === "input" ? (
-                <input type={user.type} id={user.id} />
-              ) : (
-                user.element === "select" && (
-                  <select className="user-detail__form__select">
-                    {user.option?.map((option) => (
-                      <option id={option.id}>{option.name}</option>
-                    ))}
-                  </select>
-                )
-              )}
-            </div>
-          ))}
-          <div className="user-detail__form-buttons">
-            <Button text="Submit" type="submit" />
-          </div>
-        </form>
-      }
       setUserDetail={setUserDetail}
+      formValues={formValues}
+      onSubmit={onSubmit}
     />
   );
 };

@@ -2,20 +2,25 @@ import Button from "components/Button";
 import SortIcon from "@mui/icons-material/Sort";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
-import { onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { IUser } from "typescript/interfaces/UserSlice.interfaces";
-import { createCollection } from "../../firebase/firebase";
+import {
+  IFirebaseUser,
+  IUser,
+} from "typescript/interfaces/UserSlice.interfaces";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 import ErrorIcon from "@mui/icons-material/Error";
 import AddUser from "components/AddUser";
 import EditUser from "components/EditUser";
+import { onSnapshot } from "firebase/firestore";
+import { createCollection } from "../../firebase/firebase";
 
 const Users = () => {
-  const usersCollection = createCollection<IUser>("users");
   const [users, setUsers] = useState<IUser[]>([]);
   const [searchUserInput, setSearchUserInput] = useState("");
   const [sortThis, setSortThis] = useState("");
   const [userDetail, setUserDetail] = useState<string>("");
+  const [activeUser, setActiveUser] = useState<IUser>();
+  const [usersLoading, setUsersLoading] = useState(false);
 
   const sortUsers = (a: IUser, b: IUser) => {
     switch (sortThis) {
@@ -33,13 +38,15 @@ const Users = () => {
   };
 
   useEffect(() => {
+    setUsersLoading(true);
+    const usersCollection = createCollection<IUser>("users");
     onSnapshot(usersCollection, (res) => {
+      setUsersLoading(false);
       setUsers(
         res.docs.map((item) => {
           return { ...item.data(), uid: item.id };
-        })
-      );
-    });
+        }))})
+        console.log(users)
   }, []);
 
   const searchUser = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,12 +57,17 @@ const Users = () => {
     if (searchUserInput === "") {
       return user;
     } else if (
-      user.name?.toLowerCase().includes(searchUserInput.toLowerCase())
+      user?.name.toLowerCase().includes(searchUserInput.toLowerCase())
     ) {
       return user;
     }
     return null;
   });
+
+  const editUser = (user: IUser) => {
+    setUserDetail("editUser");
+    setActiveUser(user);
+  };
 
   return (
     <section className="users__container">
@@ -99,12 +111,12 @@ const Users = () => {
                     <div className="users__user__name-container">
                       <div className="users__user__photo-container">
                         {user?.photo ? (
-                          <img src={user.photo} alt="user" />
+                          <img src={user?.photo} alt="user" />
                         ) : (
                           <h3>{user?.name?.charAt(0)}</h3>
                         )}
                       </div>
-                      <p>{user.name}</p>
+                      <p>{user?.name}</p>
                     </div>
                   </div>
                   <div
@@ -116,14 +128,21 @@ const Users = () => {
                   >
                     <p>{user?.admin ? "Admin" : "User"}</p>
                   </div>
-                  <EditIcon onClick={() => setUserDetail("editUser")} />
+                  <EditIcon onClick={() => editUser(user)} />
                 </div>
               ))
+          ) : usersLoading ? (
+            <div className="users__user">
+              <div className="users__user__message users--loading">
+                <AutorenewIcon />
+                <p>Loading ...</p>
+              </div>
+            </div>
           ) : (
             <div className="users__user">
-              <div className="users__user__not-found-message">
+              <div className="users__user__message users--notfound">
                 <ErrorIcon />
-                <p>User not found</p>
+                <p>User's data not found</p>
               </div>
             </div>
           )}
@@ -131,7 +150,7 @@ const Users = () => {
 
         {userDetail === "addUser" && <AddUser setUserDetail={setUserDetail} />}
         {userDetail === "editUser" && (
-          <EditUser setUserDetail={setUserDetail} />
+          <EditUser setUserDetail={setUserDetail} activeUser={activeUser} />
         )}
       </div>
     </section>

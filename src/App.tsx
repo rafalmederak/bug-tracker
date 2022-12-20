@@ -11,6 +11,7 @@ import FeedRoutes from "routes/FeedRoutes";
 function App() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  console.log(user);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(
@@ -22,11 +23,11 @@ function App() {
               login({
                 user: {
                   uid: userAuth.uid,
-                  email: userAuth.email,
-                  name: userAuth.displayName,
-                  admin: userAuth.admin,
-                  phone: userAuth.phoneNumber,
-                  photo: userAuth.photoURL,
+                  email: userAuth.email!,
+                  name: userAuth.displayName!,
+                  admin: userAuth.admin!,
+                  phone: userAuth.phoneNumber!,
+                  photo: userAuth.photoURL!,
                 },
               })
             );
