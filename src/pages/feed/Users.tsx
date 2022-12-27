@@ -3,18 +3,18 @@ import SortIcon from "@mui/icons-material/Sort";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import { useEffect, useState } from "react";
-import {
-  IFirebaseUser,
-  IUser,
-} from "typescript/interfaces/UserSlice.interfaces";
+import { IUser } from "typescript/interfaces/UserSlice.interfaces";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import ErrorIcon from "@mui/icons-material/Error";
 import AddUser from "components/AddUser";
 import EditUser from "components/EditUser";
-import { onSnapshot } from "firebase/firestore";
+import { onSnapshot, query, where, documentId } from "firebase/firestore";
 import { createCollection } from "../../firebase/firebase";
+import { useSelector } from "react-redux";
+import { selectUser } from "store/userSlice";
 
 const Users = () => {
+  const user = useSelector(selectUser);
   const [users, setUsers] = useState<IUser[]>([]);
   const [searchUserInput, setSearchUserInput] = useState("");
   const [sortThis, setSortThis] = useState("");
@@ -40,13 +40,19 @@ const Users = () => {
   useEffect(() => {
     setUsersLoading(true);
     const usersCollection = createCollection<IUser>("users");
-    onSnapshot(usersCollection, (res) => {
+    const usersCollectionQuery = query(
+      usersCollection,
+      where(documentId(), "!=", user?.uid)
+    );
+    onSnapshot(usersCollectionQuery, (res) => {
       setUsersLoading(false);
       setUsers(
-        res.docs.map((item) => {
-          return { ...item.data(), uid: item.id };
-        }))})
-        console.log(users)
+        res.docs.map((user) => {
+          return { ...user.data(), uid: user.id };
+        })
+      );
+    });
+    console.log(users);
   }, []);
 
   const searchUser = (e: React.ChangeEvent<HTMLInputElement>) => {

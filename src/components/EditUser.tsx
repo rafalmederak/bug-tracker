@@ -15,7 +15,6 @@ const EditUser = ({ setUserDetail, activeUser }: IUserDetailProps) => {
 
   const onSubmit = async (data: FormData) => {
     const updateUser = httpsCallable(functions, "updateUser");
-    const addAdminRole = httpsCallable(functions, "addAdminRole");
 
     try {
       console.log(data);
@@ -25,20 +24,26 @@ const EditUser = ({ setUserDetail, activeUser }: IUserDetailProps) => {
         phone: data.phone || null,
         photo: data.photo || null,
         name: data.name,
+        admin: data?.role === "admin" && true,
       }).then((result) => {
         console.log(result);
       });
-
-      if (!activeUser?.admin && data?.role === "admin") {
-        addAdminRole({ email: data.email }).then((result) => {
-          console.log(result);
-        });
-      }
     } catch (error) {
       console.log(error);
     }
+  };
 
-    console.log("test2");
+  const deleteUser = httpsCallable(functions, "deleteUser");
+
+  const removeUser = () => {
+    const uid = activeUser?.uid;
+    try {
+      deleteUser({ uid }).then((result) => {
+        console.log(result);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -47,6 +52,7 @@ const EditUser = ({ setUserDetail, activeUser }: IUserDetailProps) => {
       activeUser={activeUser}
       formValues={formValues}
       onSubmit={onSubmit}
+      removeUser={removeUser}
     />
   );
 };

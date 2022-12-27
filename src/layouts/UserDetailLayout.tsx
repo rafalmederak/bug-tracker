@@ -2,12 +2,10 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Button from "components/Button";
 
-import { httpsCallable } from "firebase/functions";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { IUserDetailLayoutProps } from "typescript/interfaces/UserDetail.interfaces";
 
-import { functions, createCollection, db } from "../firebase/firebase";
 import { FormData } from "typescript/types/UsersForm.types";
 
 const UserDetailLayout = ({
@@ -15,9 +13,8 @@ const UserDetailLayout = ({
   activeUser,
   formValues,
   onSubmit,
+  removeUser,
 }: IUserDetailLayoutProps) => {
-  const [changePassword, setChangePassword] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -30,19 +27,6 @@ const UserDetailLayout = ({
   useEffect(() => {
     reset(formValues);
   }, [activeUser]);
-
-  const deleteUser = httpsCallable(functions, "deleteUser");
-
-  const removeUser = () => {
-    const uid = activeUser?.uid;
-    try {
-      deleteUser({ uid }).then((result) => {
-        console.log(result);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <div className="user-detail__container">

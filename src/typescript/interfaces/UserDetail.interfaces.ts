@@ -10,4 +10,5 @@ export interface IUserDetailProps {
 export interface IUserDetailLayoutProps extends IUserDetailProps {
   formValues?: {};
   onSubmit: SubmitHandler<FormData>;
+  removeUser?: () => void;
 }

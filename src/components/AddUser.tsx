@@ -15,7 +15,6 @@ const AddUser = ({ setUserDetail }: IUserDetailProps) => {
 
   const onSubmit = async (data: FormData) => {
     const createUser = httpsCallable(functions, "createUser");
-    const addAdminRole = httpsCallable(functions, "addAdminRole");
 
     try {
       console.log(data);
@@ -25,6 +24,7 @@ const AddUser = ({ setUserDetail }: IUserDetailProps) => {
         photo: data.photo || null,
         name: data.name,
         password: data.password,
+        admin: data?.role === "admin" && true,
       })
         .then((result) => {
           console.log(result);
@@ -32,17 +32,9 @@ const AddUser = ({ setUserDetail }: IUserDetailProps) => {
         .catch((error) => {
           console.log(error);
         });
-
-      if (data?.role === "admin") {
-        addAdminRole({ email: data.email }).then((result) => {
-          console.log(result);
-        });
-      }
     } catch (error) {
       console.log(error);
     }
-
-    console.log("test add user");
   };
 
   return (

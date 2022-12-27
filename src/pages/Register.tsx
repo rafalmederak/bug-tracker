@@ -2,13 +2,14 @@ import LoginLayout from "layouts/LoginLayout";
 import { Link, useNavigate } from "react-router-dom";
 import RegisterImage from "assets/images/register-demo.png";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../firebase/firebase";
+import { auth, db } from "../firebase/firebase";
 import { useState } from "react";
 import Button from "components/Button";
 import { functions } from "../firebase/firebase";
 import { httpsCallable } from "firebase/functions";
 import { useDispatch } from "react-redux";
 import { login } from "store/userSlice";
+import { doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -21,7 +22,7 @@ const Register = () => {
     e.preventDefault();
     const addAdminRole = httpsCallable(functions, "addAdminRole");
     createUserWithEmailAndPassword(auth, email, password)
-      .then((authUser) => {
+      .then((authUser) => {   
         updateProfile(authUser.user, {
           displayName: username,
         });
@@ -38,6 +39,11 @@ const Register = () => {
           );
         });
         navigate("/feed/home");
+        setDoc(doc(db, "users", authUser.user.uid), {
+          name: username,
+          email: email,
+          admin: true,
+        })
       })
       .catch((error) => {
         console.error(error.message);
