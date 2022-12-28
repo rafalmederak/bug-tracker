@@ -130,6 +130,16 @@
   display: flex;
   gap: 4rem;
 
+  button {
+    transition: all 0.2s ease;
+    &:hover {
+      transform: translateY(-6px);
+      background: $white;
+      color: $gray-800;
+      outline: 1px solid $gray-800;
+    }
+  }
+
   @include media($breakpoint-lg) {
     grid-column: 2 / 4;
     justify-self: center;
@@ -139,4 +149,10 @@
 
 .user-detail__error-message {
   color: $red;
+}
+
+.user-detail__dialog-container {
+  p {
+    padding: 5rem;
+  }
 }
