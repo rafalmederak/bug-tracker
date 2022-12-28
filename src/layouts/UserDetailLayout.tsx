@@ -14,6 +14,7 @@ const UserDetailLayout = ({
   formValues,
   onSubmit,
   removeUser,
+  formError,
 }: IUserDetailLayoutProps) => {
   const {
     register,
@@ -132,16 +133,19 @@ const UserDetailLayout = ({
           </div>
         )}
 
-        <div className="user-detail__form-buttons">
-          <Button text="Submit" type="submit" />
-          {activeUser && (
-            <Button
-              text="Remove user"
-              type="button"
-              onClick={removeUser}
-              background="red"
-            />
-          )}
+        <div className="user-detail__form-buttons__wrapper">
+          <div className="user-detail__form-buttons">
+            <Button text="Submit" type="submit" />
+            {activeUser && (
+              <Button
+                text="Remove user"
+                type="button"
+                onClick={removeUser}
+                background="red"
+              />
+            )}
+          </div>
+          {formError && <p>{formError}</p>}
         </div>
       </form>
     </div>

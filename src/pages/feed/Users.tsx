@@ -19,7 +19,11 @@ const Users = () => {
   const [searchUserInput, setSearchUserInput] = useState("");
   const [sortThis, setSortThis] = useState("");
   const [userDetail, setUserDetail] = useState<string>("");
-  const [activeUser, setActiveUser] = useState<IUser>();
+  const [activeUser, setActiveUser] = useState<IUser>({
+    uid: "",
+    email: "",
+    name: "",
+  });
   const [usersLoading, setUsersLoading] = useState(false);
 
   const sortUsers = (a: IUser, b: IUser) => {
@@ -156,7 +160,11 @@ const Users = () => {
 
         {userDetail === "addUser" && <AddUser setUserDetail={setUserDetail} />}
         {userDetail === "editUser" && (
-          <EditUser setUserDetail={setUserDetail} activeUser={activeUser} />
+          <EditUser
+            setUserDetail={setUserDetail}
+            activeUser={activeUser}
+            setActiveUser={setActiveUser}
+          />
         )}
       </div>
     </section>

@@ -22,8 +22,8 @@ export const addAdminRole = functions.https.onCall((data, context) => {
         message: `Success! ${data.email} has been made an admin`,
       };
     })
-    .catch((error) => {
-      return error;
+    .catch((error: Error) => {
+      throw new functions.https.HttpsError("aborted", error.message, error);
     });
 });
 
@@ -70,8 +70,8 @@ export const createUser = functions.https.onCall((data, context) => {
         message: `Success! ${data.email} has been created`,
       };
     })
-    .catch((error) => {
-      return error;
+    .catch((error: Error) => {
+      throw new functions.https.HttpsError("aborted", error.message, error);
     });
 });
 
@@ -106,8 +106,8 @@ export const updateUser = functions.https.onCall((data, context) => {
         message: `Success! ${data.email} has been updated`,
       };
     })
-    .catch((error) => {
-      return error;
+    .catch((error: Error) => {
+      throw new functions.https.HttpsError("aborted", error.message, error);
     });
 });
 
@@ -120,8 +120,8 @@ export const deleteUser = functions.https.onCall((data, context) => {
         message: "Success! User has been deleted",
       };
     })
-    .catch((error) => {
-      return error;
+    .catch((error: Error) => {
+      throw new functions.https.HttpsError("aborted", error.message, error);
     });
 });
 
@@ -134,8 +134,8 @@ export const getallusers = https.onRequest(
       .then((listUsersResult) => {
         res.status(200).send(listUsersResult.users);
       })
-      .catch((error) => {
-        console.log("Error listing users:", error);
+      .catch((error: Error) => {
+        throw new functions.https.HttpsError("aborted", error.message, error);
       });
   }
 );
@@ -147,8 +147,8 @@ export const getUser = functions.https.onCall((data, context) => {
     .then((userRecord) => {
       return userRecord.uid;
     })
-    .catch((error) => {
-      return error;
+    .catch((error: Error) => {
+      throw new functions.https.HttpsError("aborted", error.message, error);
     });
 });
 

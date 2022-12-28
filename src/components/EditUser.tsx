@@ -6,9 +6,14 @@ import { FormData } from "typescript/types/UsersForm.types";
 import { useState } from "react";
 import { SimpleDialog } from "components/SimpleDialog";
 
-const EditUser = ({ setUserDetail, activeUser }: IUserDetailProps) => {
+const EditUser = ({
+  setUserDetail,
+  activeUser,
+  setActiveUser,
+}: IUserDetailProps) => {
   const [simpleDialogOpen, simpleDialogSetOpen] = useState(false);
   const [dialogText, setDialogText] = useState("");
+  const [formError, setFormError] = useState("");
 
   const handleOpen = () => {
     simpleDialogSetOpen(true);
@@ -16,7 +21,6 @@ const EditUser = ({ setUserDetail, activeUser }: IUserDetailProps) => {
 
   const handleClose = () => {
     simpleDialogSetOpen(false);
-    setUserDetail("");
   };
 
   const formValues = {
@@ -27,44 +31,55 @@ const EditUser = ({ setUserDetail, activeUser }: IUserDetailProps) => {
     role: activeUser?.admin ? "admin" : "user",
   };
 
-  const onSubmit = (data: FormData) => {
-    setDialogText("Updating user...");
-    handleOpen();
-    const updateUser = httpsCallable(functions, "updateUser");
-
-    console.log(data);
-    updateUser({
-      uid: activeUser?.uid,
-      email: data.email,
-      phone: data.phone || null,
-      photo: data.photo || null,
-      name: data.name,
-      admin: data?.role === "admin" && true,
-    })
-      .then((result) => {
-        console.log(result);
-        setDialogText("The user has been updated.");
-      })
-      .catch((error) => {
-        console.log(error);
+  const onSubmit = async (data: FormData) => {
+    try {
+      setDialogText("Updating user...");
+      handleOpen();
+      const updateUser = httpsCallable(functions, "updateUser");
+      await updateUser({
+        uid: activeUser?.uid,
+        email: data.email,
+        phone: data.phone || null,
+        photo: data.photo || null,
+        name: data.name,
+        admin: data?.role === "admin" && true,
       });
+      setFormError("");
+      setDialogText("The user has been updated.");
+      setActiveUser?.({
+        uid: activeUser?.uid!,
+        email: data.email,
+        phone: data?.phone,
+        photo: data?.photo,
+        name: data.name,
+        admin: data?.role === "admin" && true,
+      });
+    } catch (error) {
+      handleClose();
+      const { details } = JSON.parse(JSON.stringify(error));
+      console.log(details.message);
+      setFormError(details.message);
+      return;
+    }
   };
 
-  const deleteUser = httpsCallable(functions, "deleteUser");
-
-  const removeUser = () => {
-    setDialogText("Removing user...");
-    handleOpen();
+  const removeUser = async () => {
     const uid = activeUser?.uid;
 
-    deleteUser({ uid })
-      .then((result) => {
-        console.log(result);
-        setDialogText("The user has been removed.");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      setDialogText("Removing user...");
+      handleOpen();
+      const deleteUser = httpsCallable(functions, "deleteUser");
+      await deleteUser({ uid });
+      setFormError("");
+      setUserDetail("");
+    } catch (error) {
+      handleClose();
+      const { details } = JSON.parse(JSON.stringify(error));
+      console.log(details.message);
+      setFormError(details.message);
+      return;
+    }
   };
 
   return (
@@ -75,6 +90,7 @@ const EditUser = ({ setUserDetail, activeUser }: IUserDetailProps) => {
         formValues={formValues}
         onSubmit={onSubmit}
         removeUser={removeUser}
+        formError={formError}
       />
       <SimpleDialog
         open={simpleDialogOpen}

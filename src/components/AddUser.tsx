@@ -9,6 +9,7 @@ import { SimpleDialog } from "components/SimpleDialog";
 const AddUser = ({ setUserDetail }: IUserDetailProps) => {
   const [simpleDialogOpen, simpleDialogSetOpen] = useState(false);
   const [dialogText, setDialogText] = useState("");
+  const [formError, setFormError] = useState("");
 
   const handleOpen = () => {
     simpleDialogSetOpen(true);
@@ -16,7 +17,6 @@ const AddUser = ({ setUserDetail }: IUserDetailProps) => {
 
   const handleClose = () => {
     simpleDialogSetOpen(false);
-    setUserDetail("");
   };
 
   const formValues = {
@@ -27,27 +27,28 @@ const AddUser = ({ setUserDetail }: IUserDetailProps) => {
     role: "user",
   };
 
-  const onSubmit = (data: FormData) => {
-    setDialogText("Adding user...");
-    handleOpen();
-    const createUser = httpsCallable(functions, "createUser");
-
-    console.log(data);
-    createUser({
-      email: data.email,
-      phone: data.phone || null,
-      photo: data.photo || null,
-      name: data.name,
-      password: data.password,
-      admin: data?.role === "admin" && true,
-    })
-      .then((result) => {
-        console.log(result);
-        setDialogText("The user has been added.");
-      })
-      .catch((error) => {
-        console.log(error);
+  const onSubmit = async (data: FormData) => {
+    try {
+      setDialogText("Adding user...");
+      handleOpen();
+      const createUser = httpsCallable(functions, "createUser");
+      await createUser({
+        email: data.email,
+        phone: data.phone || null,
+        photo: data.photo || null,
+        name: data.name,
+        password: data.password,
+        admin: data?.role === "admin" && true,
       });
+      setFormError("");
+      setDialogText("The user has been added.");
+    } catch (error) {
+      handleClose();
+      const { details } = JSON.parse(JSON.stringify(error));
+      console.log(details.message);
+      setFormError(details.message);
+      return;
+    }
   };
 
   return (
@@ -56,6 +57,7 @@ const AddUser = ({ setUserDetail }: IUserDetailProps) => {
         setUserDetail={setUserDetail}
         formValues={formValues}
         onSubmit={onSubmit}
+        formError={formError}
       />
       <SimpleDialog
         open={simpleDialogOpen}
