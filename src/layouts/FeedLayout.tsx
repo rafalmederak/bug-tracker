@@ -31,6 +31,10 @@ const FeedLayout = () => {
     navigate("/");
   };
 
+  const filteredSidebarLinks = sidebarlinks.filter((link) =>
+    !user?.admin ? link.id !== 4 : link.id
+  );
+
   return (
     <div className="feed-layout__container">
       <header className="feed-layout__header">
@@ -84,7 +88,7 @@ const FeedLayout = () => {
         className={`feed-layout__sidebar ${isMenuOpen && "sidebar--active"}`}
       >
         <div className="feed-layout__sidebar__items">
-          {sidebarlinks.map((item) => (
+          {filteredSidebarLinks.map((item) => (
             <NavLink
               to={item.link}
               key={item.id}
