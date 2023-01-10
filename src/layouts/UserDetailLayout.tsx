@@ -8,6 +8,9 @@ import { IUserDetailLayoutProps } from "typescript/interfaces/UserDetail.interfa
 
 import { FormData } from "typescript/types/UsersForm.types";
 
+import { yupResolver } from "@hookform/resolvers/yup";
+import { usersSchema } from "schema/users.schema";
+
 const UserDetailLayout = ({
   setUserDetail,
   activeUser,
@@ -23,6 +26,7 @@ const UserDetailLayout = ({
     reset,
   } = useForm<FormData>({
     defaultValues: formValues,
+    resolver: yupResolver(usersSchema),
   });
 
   useEffect(() => {
@@ -48,12 +52,7 @@ const UserDetailLayout = ({
       <form className="user-detail__form" onSubmit={handleSubmit(onSubmit)}>
         <div className="user-detail__form__item">
           <label htmlFor="name">Name</label>
-          <input
-            {...register("name", {
-              required: "Name is required",
-              maxLength: 50,
-            })}
-          />
+          <input {...register("name")} required />
           {errors.name?.message && (
             <p className="user-detail__error-message">{errors.name?.message}</p>
           )}
@@ -61,40 +60,38 @@ const UserDetailLayout = ({
 
         <div className="user-detail__form__item">
           <label htmlFor="photo">Photo (url)</label>
-          <input {...register("photo", {})} />
+          <input {...register("photo")} />
+          {errors.photo?.message && (
+            <p className="user-detail__error-message">
+              {errors.photo?.message}
+            </p>
+          )}
         </div>
 
         <div className="user-detail__form__item">
           <label htmlFor="phone">Phone</label>
-          <input
-            type="string"
-            {...register("phone", {
-              maxLength: 50,
-              // pattern: /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/,
-            })}
-          />
+          <input type="string" {...register("phone")} />
+          {errors.phone?.message && (
+            <p className="user-detail__error-message">
+              {errors.phone?.message}
+            </p>
+          )}
         </div>
 
         <div className="user-detail__form__item">
           <label htmlFor="role">Role</label>
-          <select
-            {...register("role", {
-              maxLength: 50,
-            })}
-          >
+          <select {...register("role")}>
             <option value="user">User</option>
             <option value="admin">Admin</option>
           </select>
+          {errors.role?.message && (
+            <p className="user-detail__error-message">{errors.role?.message}</p>
+          )}
         </div>
 
         <div className="user-detail__form__item">
           <label htmlFor="email">Email</label>
-          <input
-            {...register("email", {
-              required: "Email is required",
-              maxLength: 50,
-            })}
-          />
+          <input {...register("email")} required />
           {errors.email?.message && (
             <p className="user-detail__error-message">
               {errors.email?.message}
@@ -113,18 +110,7 @@ const UserDetailLayout = ({
             value="Send email to user"
             onClick={() => console.log("LETS GO")}
           /> */}
-            <input
-              type="password"
-              {...register("password", {
-                required: "Password is required",
-                maxLength: 50,
-                pattern: {
-                  value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                  message:
-                    "Password requirement: Minimum eight characters, at least one letter and one number.",
-                },
-              })}
-            />
+            <input type="password" {...register("password")} />
             {errors.password?.message && (
               <p className="user-detail__error-message">
                 {errors.password?.message}
